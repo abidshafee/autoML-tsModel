@@ -1,6 +1,7 @@
 import streamlit as st
 # import auto_ts as ts
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import plotly
 import plotly.express as px
 import plotly.figure_factory as ff
@@ -27,18 +28,30 @@ st.pyplot()
 # st.line_chart(df)
 st.subheader("Plot Site Data")
 sites = st.selectbox("Select Site:",("SiteA", "SiteB", "SiteC", "SiteD","SiteE", "SiteF"))
+
 @st.cache(allow_output_mutation=True)
 def plot_sites(cols):
     plot = px.line(df, x=df.index, y=df[cols])
     return plot
 fig1 = plot_sites(sites)
-#fig = ff.Figure([ff.Scatter(x=df['Time'], y=df['SiteA', 'SiteB'])])
 st.plotly_chart(fig1, use_container_width=False)
 
-attrs = [df.columns[0], df.columns[1], df.columns[2]]
-labels = ['SiteA', 'SiteB', 'SiteC']
-fig2 = ff.create_distplot(
-         attrs, labels)
+st.subheader("Data Distribution")
+
+scaler = StandardScaler()
+tdf = scaler.fit_transform(df)
+
+attrs = [tdf[0], tdf[1], tdf[2], tdf[3], tdf[4], tdf[5]]
+labels = ['SiteA', 'SiteB', 'SiteC', 'SiteD', 'SiteE', 'SiteF']
+colors = ['#393E46', '#2BCDC1', '#F66095', '#835AF1', '#7FA6EE', '#B8F7D4']
+bins = [0.27, 0.25, 0.2, 0.15, 0.1, 0.07]
+
+@st.cache(allow_output_mutation=True)
+def data_distribution(data, label, col, bin):
+    disp = ff.create_distplot(data, label, colors = col, bin_size=bin, show_curve=False)
+    return disp
+
+fig2 = data_distribution(attrs, labels, colors, bins)
 st.plotly_chart(fig2, use_container_width=True)
 
 
