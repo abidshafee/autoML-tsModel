@@ -18,6 +18,7 @@ st.title("Throughput Metrics")
 @st.cache(allow_output_mutation=True)
 def load_dataset():
     data = pd.read_csv("https://raw.githubusercontent.com/abidshafee/autoML-tsModel/main/throughput_metrics.csv", parse_dates=['Time'], index_col='Time')
+    data = data.dropna()
     return data
 
 df = load_dataset()
