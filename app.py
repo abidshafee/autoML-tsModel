@@ -48,8 +48,10 @@ fig.add_trace(go.Scatter(x=df.index, y=df['SiteE'], name="SiteE"),
               row=2, col=1)
 fig.add_trace(go.Scatter(x=df.index, y=df['SiteF'], name="SiteF"),
               row=1, col=1)
-fig.update_layout(height=600, width=800,
-                  title_text="Stacked All Sites Data", showlegend=True)
+fig.update_layout(height=600, width=800, xaxis6_rangeslider_visible=True,
+                  title_text="Stacked All Sites Data", showlegend=True,
+                  legend_orientation="v",
+                  xaxis6_rangeslider_thickness=0.1)
 st.plotly_chart(fig, use_container_width=True)
 
 # Plotting all features together
