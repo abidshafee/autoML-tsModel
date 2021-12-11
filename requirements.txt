@@ -3,4 +3,6 @@ matplotlib
 streamlit
 auto_ts
 plotly
+pystan
+
 
