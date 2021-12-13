@@ -1,5 +1,6 @@
 pandas
 matplotlib
+sklearn
 streamlit
 auto_ts
 plotly

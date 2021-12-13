@@ -1,4 +1,4 @@
-from os import name
+# from os import name
 import streamlit as st
 # import auto_ts as ts
 import pandas as pd
@@ -19,7 +19,7 @@ st.title("Throughput Metrics Forcasting")
 @st.cache(allow_output_mutation=True)
 def load_dataset():
     data = pd.read_csv("https://raw.githubusercontent.com/abidshafee/autoML-tsModel/main/throughput_metrics.csv", parse_dates=['Time'], index_col='Time')
-    data = data.dropna(inplace=True)
+    # data = data.dropna(inplace=True)
     return data
 
 df = load_dataset()
