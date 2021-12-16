@@ -5,5 +5,5 @@ streamlit
 auto_ts
 plotly
 pystan
-
+scipy
 

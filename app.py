@@ -2,9 +2,11 @@
 import streamlit as st
 # import auto_ts as ts
 import pandas as pd
-import statsmodels
+import scipy.stats as sst
+import numpy as np
+# import statsmodels
 from sklearn.preprocessing import StandardScaler
-import plotly
+# import plotly
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.figure_factory as ff
@@ -24,15 +26,25 @@ def load_dataset():
 
 df = load_dataset()
 st.subheader("Throughput Dataset For different Sites:")
-st.dataframe(df)
-st.subheader("Data Description")
-st.write(df.describe(include='all'))
 
 # st.bar_chart(df)
 # df.hist()
 # st.pyplot()
 # st.line_chart(df)
 
+# Removing Outliers
+@st.cache(allow_output_mutation=True)
+def remove_outliers(data):
+    z_score = sst.zscore(data)
+    abs_z_scores = np.abs(z_score)
+    data_filter = (abs_z_scores<3).all(axis=1)
+    df = data[data_filter]
+    return df
+
+df = remove_outliers(df)
+st.dataframe(df)
+st.subheader("Data Description")
+st.write(df.describe(include='all'))
 
 fig = make_subplots(rows=6, cols=1,
                     shared_xaxes=True,
