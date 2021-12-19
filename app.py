@@ -15,16 +15,35 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 from datetime import datetime
+import logging
+
+logging.basicConfig(level=logging.WARN)
+logger = logging.getLogger(__name__)
 
 st.title("Throughput Metrics Forcasting")
 
+# Read the wine-quality csv file from the URL
+csv_url = (
+        "https://raw.githubusercontent.com/abidshafee/autoML-tsModel/main/throughput_metrics.csv"
+    )
+
 @st.cache(allow_output_mutation=True)
-def load_dataset():
-    data = pd.read_csv("https://raw.githubusercontent.com/abidshafee/autoML-tsModel/main/throughput_metrics.csv", parse_dates=['Time'], index_col='Time')
-    # data = data.dropna(inplace=True)
+def load_dataset(csv):
+    try:
+        data = pd.read_csv(csv, parse_dates=['Time'], index_col='Time')
+    except Exception as e:
+        logger.exception(
+            "Unable to download training & test CSV, check your internet connection. Error: %s", e
+    )
     return data
 
-df = load_dataset()
+#@st.cache(allow_output_mutation=True)
+#def load_dataset():
+    # data = pd.read_csv("https://raw.githubusercontent.com/abidshafee/autoML-tsModel/main/throughput_metrics.csv", parse_dates=['Time'], index_col='Time')
+    ## data = data.dropna(inplace=True)
+    # return data
+
+df = load_dataset(csv_url)
 st.subheader("Throughput Dataset For different Sites:")
 
 # st.bar_chart(df)
